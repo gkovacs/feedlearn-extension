@@ -1,0 +1,6 @@
+#!/bin/bash
+
+version=`python -c 'import json; print json.load(open("manifest.json"))["version"]'`
+outfile="feedlearn-$version.zip"
+if [ -f "$outfile" ]; then rm "$outfile"; fi
+zip "$outfile" *.js manifest.json
