@@ -19,8 +19,6 @@ insertIfMissing = ->
         insertBeforeItem jfeeditem
 
 initialize = ->
-  console.log 'feedlearn loaded!'
-  console.log 'feedlearn2'
   setInterval ->
     insertIfMissing()
   , 1000
@@ -54,10 +52,7 @@ if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn')
     left: '0px'
     z-index: 1000
   })
-  console.log 'insert occurred!'
   initialize()
-else
-  console.log 'skipping load!'
 
 #if root.feedlearn?
 #  return

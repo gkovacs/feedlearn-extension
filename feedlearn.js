@@ -24,8 +24,6 @@
     return results$;
   };
   initialize = function(){
-    console.log('feedlearn loaded!');
-    console.log('feedlearn2');
     return setInterval(function(){
       return insertIfMissing();
     }, 1000);
@@ -37,9 +35,6 @@
       left: '0px',
       zIndex: 1000
     }));
-    console.log('insert occurred!');
     initialize();
-  } else {
-    console.log('skipping load!');
   }
 }).call(this);
