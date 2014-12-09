@@ -44,15 +44,32 @@ initialize = ->
     console.log event.data
     eval(event.data.call)
   */
+#console.log 'chrome!'
+#console.log chrome
+#console.log chrome.runtime
+#console.log chrome.runtime.send-message
 
-if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
-  $('html').append $('<div>').text('foobar').attr('id', 'feedlearn').css({
-    position: 'absolute'
-    top: '0px'
-    left: '0px'
-    z-index: 1000
-  })
-  initialize()
+preinitialize = ->
+  if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
+    console.log 'feedlearn loaded'
+    $('html').append $('<div>').attr('id', 'feedlearn').css({
+      position: 'absolute'
+      display: 'none'
+      top: '0px'
+      left: '0px'
+      z-index: 1000
+    })
+    initialize()
+
+chrome.runtime.on-message.add-listener (request, sender) ->
+  #console.log 'contentscript received message'
+  #console.log request
+  #console.log sender
+  if request.feedlearn and request.format == 'link' or request.format == 'interactive'
+    preinitialize()
+
+chrome.runtime.send-message {feedlearn: 'getformat'}
+
 
 #if root.feedlearn?
 #  return

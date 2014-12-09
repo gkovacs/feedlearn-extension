@@ -7,11 +7,18 @@
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [
+    "cookies",
     "http://facebook.com/*",
     "https://facebook.com/*",
     "http://www.facebook.com/*",
-    "https://www.facebook.com/*"
+    "https://www.facebook.com/*",
+    "http://feedlearn.herokuapp.com/*",
+    "https://feedlearn.herokuapp.com/*"
   ],
+  "background": {
+    "scripts": [ "background.js" ],
+    "persistent": false
+  },
   "content_scripts": [ {
     "all_frames": true,
     "js": [ "jquery-1.11.1.min.js", "feedlearn.js" ],
