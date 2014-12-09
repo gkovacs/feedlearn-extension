@@ -43,7 +43,7 @@
     }
   };
   chrome.runtime.onMessage.addListener(function(request, sender){
-    if (request.feedlearn && request.format === 'link' || request.format === 'interactive') {
+    if (request.feedlearn && request.format !== 'none') {
       return preinitialize();
     }
   });
