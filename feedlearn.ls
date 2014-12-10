@@ -18,10 +18,18 @@ insertIfMissing = ->
       if root.numitems % 10 == 5
         insertBeforeItem jfeeditem
 
+root.mostrecentmousemove = Date.now()
+root.timeopened = Date.now()
+
 initialize = ->
   setInterval ->
     insertIfMissing()
   , 1000
+  $(document).mousemove ->
+    root.mostrecentmousemove = Date.now()
+  setInterval ->
+    chrome.runtime.send-message {feedlearn: 'fbstillopen', mostrecentmousemove: root.mostrecentmousemove, timeopened: root.timeopened, timesincemousemove: Date.now() - root.mostrecentmousemove}
+  , 5000
   #for feeditem in $('.mbm')
   #  $(feeditem).before($('<div>').text('newfoobar'))
   #$.get 'https://geza.herokuapp.com/index.html', (data) ->
@@ -51,7 +59,7 @@ initialize = ->
 
 preinitialize = ->
   if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
-    console.log 'feedlearn loaded'
+    #console.log 'feedlearn loaded'
     $('html').append $('<div>').attr('id', 'feedlearn').css({
       position: 'absolute'
       display: 'none'
@@ -68,7 +76,8 @@ chrome.runtime.on-message.add-listener (request, sender) ->
   if request.feedlearn and request.format != 'none' # request.format == 'link' or request.format == 'interactive'
     preinitialize()
 
-chrome.runtime.send-message {feedlearn: 'getformat'}
+if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
+  chrome.runtime.send-message {feedlearn: 'getformat'}
 
 
 #if root.feedlearn?

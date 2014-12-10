@@ -24,14 +24,26 @@
     }
     return results$;
   };
+  root.mostrecentmousemove = Date.now();
+  root.timeopened = Date.now();
   initialize = function(){
-    return setInterval(function(){
+    setInterval(function(){
       return insertIfMissing();
     }, 1000);
+    $(document).mousemove(function(){
+      return root.mostrecentmousemove = Date.now();
+    });
+    return setInterval(function(){
+      return chrome.runtime.sendMessage({
+        feedlearn: 'fbstillopen',
+        mostrecentmousemove: root.mostrecentmousemove,
+        timeopened: root.timeopened,
+        timesincemousemove: Date.now() - root.mostrecentmousemove
+      });
+    }, 5000);
   };
   preinitialize = function(){
     if (window.location.toString() === 'https://www.facebook.com/' && $('#feedlearn').length === 0) {
-      console.log('feedlearn loaded');
       $('html').append($('<div>').attr('id', 'feedlearn').css({
         position: 'absolute',
         display: 'none',
@@ -47,7 +59,9 @@
       return preinitialize();
     }
   });
-  chrome.runtime.sendMessage({
-    feedlearn: 'getformat'
-  });
+  if (window.location.toString() === 'https://www.facebook.com/' && $('#feedlearn').length === 0) {
+    chrome.runtime.sendMessage({
+      feedlearn: 'getformat'
+    });
+  }
 }).call(this);
