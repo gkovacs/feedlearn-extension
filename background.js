@@ -77,7 +77,7 @@
             tab = tabs[i$];
             results$.push(chrome.tabs.sendMessage(tab.id, {
               feedlearn: true,
-              format: cookie.value
+              format: cookie.format
             }));
           }
           return results$;

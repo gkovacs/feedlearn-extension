@@ -63,7 +63,7 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
       send-response {feedlearn: true, format: format}
       chrome.tabs.query {}, (tabs) ->
         for tab in tabs
-          chrome.tabs.send-message tab.id, {feedlearn: true, format: cookie.value}
+          chrome.tabs.send-message tab.id, {feedlearn: true, format: cookie.format}
       addlog {type: 'fbvisit'}, cookie
       addlogfb {type: 'fbvisit'}, cookie
       #setInterval ->

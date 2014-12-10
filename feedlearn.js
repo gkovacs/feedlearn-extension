@@ -55,7 +55,7 @@
     }
   };
   chrome.runtime.onMessage.addListener(function(request, sender){
-    if (request.feedlearn && request.format !== 'none') {
+    if (request.feedlearn && request.format === 'link' || request.format === 'interactive') {
       return preinitialize();
     }
   });

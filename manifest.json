@@ -3,7 +3,7 @@
 
   "name": "Feed Learn",
   "description": "This extension helps you learn vocabulary as you browse your Facebook feed",
-  "version": "1.6",
+  "version": "1.7",
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [

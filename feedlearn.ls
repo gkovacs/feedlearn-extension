@@ -73,7 +73,7 @@ chrome.runtime.on-message.add-listener (request, sender) ->
   #console.log 'contentscript received message'
   #console.log request
   #console.log sender
-  if request.feedlearn and request.format != 'none' # request.format == 'link' or request.format == 'interactive'
+  if request.feedlearn and request.format == 'link' or request.format == 'interactive'
     preinitialize()
 
 if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
