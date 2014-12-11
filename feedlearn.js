@@ -26,10 +26,12 @@
   };
   root.mostrecentmousemove = Date.now();
   root.timeopened = Date.now();
-  initialize = function(){
-    setInterval(function(){
-      return insertIfMissing();
-    }, 1000);
+  initialize = function(format){
+    if (format === 'link' || format === 'interactive') {
+      setInterval(function(){
+        return insertIfMissing();
+      }, 1000);
+    }
     $(document).mousemove(function(){
       return root.mostrecentmousemove = Date.now();
     });
@@ -42,7 +44,7 @@
       });
     }, 5000);
   };
-  preinitialize = function(){
+  preinitialize = function(format){
     if (window.location.toString() === 'https://www.facebook.com/' && $('#feedlearn').length === 0) {
       $('html').append($('<div>').attr('id', 'feedlearn').css({
         position: 'absolute',
@@ -51,12 +53,12 @@
         left: '0px',
         zIndex: 1000
       }));
-      return initialize();
+      return initialize(format);
     }
   };
   chrome.runtime.onMessage.addListener(function(request, sender){
-    if (request.feedlearn && request.format === 'link' || request.format === 'interactive') {
-      return preinitialize();
+    if (request.feedlearn) {
+      return preinitialize(request.format);
     }
   });
   if (window.location.toString() === 'https://www.facebook.com/' && $('#feedlearn').length === 0) {

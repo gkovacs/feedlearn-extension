@@ -17,7 +17,7 @@
   };
   getCookie = function(callback){
     return chrome.cookies.getAll({
-      url: 'http://feedlearn.herokuapp.com/'
+      url: 'https://feedlearn.herokuapp.com/'
     }, function(cookie){
       var output, i$, len$, x, name, value;
       output = {};

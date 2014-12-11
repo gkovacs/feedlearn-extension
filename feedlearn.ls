@@ -21,10 +21,11 @@ insertIfMissing = ->
 root.mostrecentmousemove = Date.now()
 root.timeopened = Date.now()
 
-initialize = ->
-  setInterval ->
-    insertIfMissing()
-  , 1000
+initialize = (format) ->
+  if format == 'link' or format == 'interactive'
+    setInterval ->
+      insertIfMissing()
+    , 1000
   $(document).mousemove ->
     root.mostrecentmousemove = Date.now()
   setInterval ->
@@ -57,7 +58,7 @@ initialize = ->
 #console.log chrome.runtime
 #console.log chrome.runtime.send-message
 
-preinitialize = ->
+preinitialize = (format) ->
   if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
     #console.log 'feedlearn loaded'
     $('html').append $('<div>').attr('id', 'feedlearn').css({
@@ -67,14 +68,14 @@ preinitialize = ->
       left: '0px'
       z-index: 1000
     })
-    initialize()
+    initialize(format)
 
 chrome.runtime.on-message.add-listener (request, sender) ->
   #console.log 'contentscript received message'
   #console.log request
   #console.log sender
-  if request.feedlearn and request.format == 'link' or request.format == 'interactive'
-    preinitialize()
+  if request.feedlearn
+    preinitialize(request.format)
 
 if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
   chrome.runtime.send-message {feedlearn: 'getformat'}

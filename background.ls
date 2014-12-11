@@ -15,7 +15,7 @@ post-json-ext = (url, jsondata, callback) ->
   }
 
 get-cookie = (callback) ->
-  chrome.cookies.getAll {url: 'http://feedlearn.herokuapp.com/'}, (cookie) ->
+  chrome.cookies.getAll {url: 'https://feedlearn.herokuapp.com/'}, (cookie) ->
     output = {}
     for x in cookie
       name = unescape x.name
