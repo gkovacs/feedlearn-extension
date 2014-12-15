@@ -27,8 +27,8 @@ get-remote-cookies = (username, callback) ->
   if not username? or username == 'Anonymous User' or username.length == 0
     return
   $.getJSON ('https://feedlearn.herokuapp.com/cookiesforuser?' + $.param({username: username})), (cookies) ->
-    console.log 'remote cookies:'
-    console.log cookies
+    #console.log 'remote cookies:'
+    #console.log cookies
     for k,v of cookies
       chrome.cookies.set({url: 'https://feedlearn.herokuapp.com/', name: k, value: v.toString(), path: '/'})
     callback(cookies)
@@ -85,6 +85,8 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
       get-remote-cookies fullname, (remotecookie) ->
         for k,v of remotecookie
           cookie[k] = v
+        #console.log 'combined cookie:'
+        #console.log cookie
         #console.log cookie.value
         format = cookie.format
         send-response {feedlearn: true, format: format}

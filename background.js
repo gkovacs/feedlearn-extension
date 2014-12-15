@@ -38,8 +38,6 @@
       username: username
     }), function(cookies){
       var k, v;
-      console.log('remote cookies:');
-      console.log(cookies);
       for (k in cookies) {
         v = cookies[k];
         chrome.cookies.set({
