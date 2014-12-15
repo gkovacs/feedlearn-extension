@@ -22,14 +22,20 @@ root.mostrecentmousemove = Date.now()
 root.timeopened = Date.now()
 
 initialize = (format) ->
-  if format == 'link' or format == 'interactive'
+  if not (format == 'link' or format == 'interactive' or format == 'none')
+    fburl = $('.fbxWelcomeBoxName').attr('href')
+    fbname = $('.fbxWelcomeBoxName').text()
+    chrome.runtime.send-message {feedlearn: 'missingformat', fburl: fburl, fbname: fbname}
+  if format != 'none' #format == 'link' or format == 'interactive'
     setInterval ->
       insertIfMissing()
     , 1000
   $(document).mousemove ->
     root.mostrecentmousemove = Date.now()
   setInterval ->
-    chrome.runtime.send-message {feedlearn: 'fbstillopen', mostrecentmousemove: root.mostrecentmousemove, timeopened: root.timeopened, timesincemousemove: Date.now() - root.mostrecentmousemove}
+    fburl = $('.fbxWelcomeBoxName').attr('href')
+    fbname = $('.fbxWelcomeBoxName').text()
+    chrome.runtime.send-message {feedlearn: 'fbstillopen', mostrecentmousemove: root.mostrecentmousemove, timeopened: root.timeopened, timesincemousemove: Date.now() - root.mostrecentmousemove, fburl: fburl, fbname: fbname}
   , 5000
   #for feeditem in $('.mbm')
   #  $(feeditem).before($('<div>').text('newfoobar'))
@@ -61,6 +67,7 @@ initialize = (format) ->
 preinitialize = (format) ->
   if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
     #console.log 'feedlearn loaded'
+    #if $('.fbxWelcomeBoxName').attr('href')
     $('html').append $('<div>').attr('id', 'feedlearn').css({
       position: 'absolute'
       display: 'none'
@@ -78,7 +85,9 @@ chrome.runtime.on-message.add-listener (request, sender) ->
     preinitialize(request.format)
 
 if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
-  chrome.runtime.send-message {feedlearn: 'getformat'}
+  fburl = $('.fbxWelcomeBoxName').attr('href')
+  fbname = $('.fbxWelcomeBoxName').text()
+  chrome.runtime.send-message {feedlearn: 'getformat', fburl: fburl, fbname: fbname}
 
 
 #if root.feedlearn?
