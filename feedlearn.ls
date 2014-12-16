@@ -89,8 +89,8 @@ loadfirststart = ->
   if /*window.location.toString() == 'https://www.facebook.com/' and*/ $('#feedlearn').length == 0
     fburl = $('.fbxWelcomeBoxName').attr('href')
     fbname = $('.fbxWelcomeBoxName').text()
-    console.log 'fburl:' + fburl
-    console.log 'fbname:' + fbname
+    #console.log 'fburl:' + fburl
+    #console.log 'fbname:' + fbname
     chrome.runtime.send-message {feedlearn: 'getformat', fburl: fburl, fbname: fbname}
 
 loadfirststart()
