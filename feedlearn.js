@@ -82,8 +82,6 @@
     if ($('#feedlearn').length === 0) {
       fburl = $('.fbxWelcomeBoxName').attr('href');
       fbname = $('.fbxWelcomeBoxName').text();
-      console.log('fburl:' + fburl);
-      console.log('fbname:' + fbname);
       return chrome.runtime.sendMessage({
         feedlearn: 'getformat',
         fburl: fburl,
