@@ -65,9 +65,10 @@ initialize = (format) ->
 #console.log chrome.runtime.send-message
 
 preinitialize = (format) ->
-  if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
+  if /*window.location.toString() == 'https://www.facebook.com/' and*/ $('#feedlearn').length == 0
     #console.log 'feedlearn loaded'
     #if $('.fbxWelcomeBoxName').attr('href')
+    clearInterval root.firststartprocess
     $('html').append $('<div>').attr('id', 'feedlearn').css({
       position: 'absolute'
       display: 'none'
@@ -84,11 +85,16 @@ chrome.runtime.on-message.add-listener (request, sender) ->
   if request.feedlearn
     preinitialize(request.format)
 
-if window.location.toString() == 'https://www.facebook.com/' and $('#feedlearn').length == 0
-  fburl = $('.fbxWelcomeBoxName').attr('href')
-  fbname = $('.fbxWelcomeBoxName').text()
-  chrome.runtime.send-message {feedlearn: 'getformat', fburl: fburl, fbname: fbname}
+loadfirststart = ->
+  if /*window.location.toString() == 'https://www.facebook.com/' and*/ $('#feedlearn').length == 0
+    fburl = $('.fbxWelcomeBoxName').attr('href')
+    fbname = $('.fbxWelcomeBoxName').text()
+    console.log 'fburl:' + fburl
+    console.log 'fbname:' + fbname
+    chrome.runtime.send-message {feedlearn: 'getformat', fburl: fburl, fbname: fbname}
 
+loadfirststart()
+root.firststartprocess = setInterval loadfirststart, 5000
 
 #if root.feedlearn?
 #  return
