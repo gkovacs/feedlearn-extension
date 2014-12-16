@@ -11,7 +11,7 @@
   root.numitems = 0;
   insertIfMissing = function(){
     var i$, ref$, len$, feeditem, jfeeditem, results$ = [];
-    for (i$ = 0, len$ = (ref$ = $('.mbm')).length; i$ < len$; ++i$) {
+    for (i$ = 0, len$ = (ref$ = $('.mbm._5jmm')).length; i$ < len$; ++i$) {
       feeditem = ref$[i$];
       jfeeditem = $(feeditem);
       if (!jfeeditem.attr('feedlearninserted')) {

@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "Feed Learn",
-  "description": "This extension helps you learn vocabulary as you browse your Facebook feed",
-  "version": "1.9",
+  "description": "FeedLearn helps you learn vocabulary by showing you quizzes as you browse your Facebook feed",
+  "version": "1.11",
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [

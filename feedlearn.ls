@@ -10,7 +10,7 @@ insertBeforeItem = (jfeeditem) ->
 root.numitems = 0
 
 insertIfMissing = ->
-  for feeditem in $('.mbm')
+  for feeditem in $('.mbm._5jmm')
     jfeeditem = $(feeditem)
     if not jfeeditem.attr('feedlearninserted')
       jfeeditem.attr('feedlearninserted', true)
