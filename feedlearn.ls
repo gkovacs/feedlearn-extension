@@ -35,7 +35,10 @@ initialize = (format) ->
   setInterval ->
     fburl = $('.fbxWelcomeBoxName').attr('href')
     fbname = $('.fbxWelcomeBoxName').text()
-    chrome.runtime.send-message {feedlearn: 'fbstillopen', mostrecentmousemove: root.mostrecentmousemove, timeopened: root.timeopened, timesincemousemove: Date.now() - root.mostrecentmousemove, fburl: fburl, fbname: fbname}
+    timesincemousemove = Date.now() - root.mostrecentmousemove
+    if timesincemousemove > 10000
+      return
+    chrome.runtime.send-message {feedlearn: 'fbstillopen', mostrecentmousemove: root.mostrecentmousemove, timeopened: root.timeopened, timesincemousemove: timesincemousemove, fburl: fburl, fbname: fbname}
   , 5000
   #for feeditem in $('.mbm')
   #  $(feeditem).before($('<div>').text('newfoobar'))

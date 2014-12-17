@@ -23,8 +23,8 @@
       output = {};
       for (i$ = 0, len$ = cookie.length; i$ < len$; ++i$) {
         x = cookie[i$];
-        name = unescape(x.name);
-        value = unescape(x.value);
+        name = decodeURIComponent(x.name);
+        value = decodeURIComponent(x.value);
         output[name] = value;
       }
       return callback(output);
@@ -43,7 +43,7 @@
         chrome.cookies.set({
           url: 'https://feedlearn.herokuapp.com/',
           name: k,
-          value: v.toString(),
+          value: encodeURIComponent(v.toString()),
           path: '/'
         });
       }

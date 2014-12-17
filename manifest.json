@@ -3,7 +3,7 @@
 
   "name": "Feed Learn",
   "description": "FeedLearn helps you learn vocabulary by showing you quizzes as you browse your Facebook feed",
-  "version": "1.11",
+  "version": "1.12",
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [

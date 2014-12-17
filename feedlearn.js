@@ -46,14 +46,18 @@
       return root.mostrecentmousemove = Date.now();
     });
     return setInterval(function(){
-      var fburl, fbname;
+      var fburl, fbname, timesincemousemove;
       fburl = $('.fbxWelcomeBoxName').attr('href');
       fbname = $('.fbxWelcomeBoxName').text();
+      timesincemousemove = Date.now() - root.mostrecentmousemove;
+      if (timesincemousemove > 10000) {
+        return;
+      }
       return chrome.runtime.sendMessage({
         feedlearn: 'fbstillopen',
         mostrecentmousemove: root.mostrecentmousemove,
         timeopened: root.timeopened,
-        timesincemousemove: Date.now() - root.mostrecentmousemove,
+        timesincemousemove: timesincemousemove,
         fburl: fburl,
         fbname: fbname
       });

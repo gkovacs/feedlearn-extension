@@ -18,8 +18,8 @@ get-cookie = (callback) ->
   chrome.cookies.getAll {url: 'https://feedlearn.herokuapp.com/'}, (cookie) ->
     output = {}
     for x in cookie
-      name = unescape x.name
-      value = unescape x.value
+      name = decodeURIComponent x.name
+      value = decodeURIComponent x.value
       output[name] = value
     callback output
 
@@ -30,7 +30,7 @@ get-remote-cookies = (username, callback) ->
     #console.log 'remote cookies:'
     #console.log cookies
     for k,v of cookies
-      chrome.cookies.set({url: 'https://feedlearn.herokuapp.com/', name: k, value: v.toString(), path: '/'})
+      chrome.cookies.set({url: 'https://feedlearn.herokuapp.com/', name: k, value: encodeURIComponent(v.toString()), path: '/'})
     callback(cookies)
 
 #root.isfirst = true
