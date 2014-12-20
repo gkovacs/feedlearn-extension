@@ -3,4 +3,4 @@
 version=`python -c 'import json; print json.load(open("manifest.json"))["version"]'`
 outfile="feedlearn-$version.zip"
 if [ -f "$outfile" ]; then rm "$outfile"; fi
-zip "$outfile" *.js manifest.json
+zip "$outfile" `ls *.js | grep -v 'gulpfile.js'` manifest.json

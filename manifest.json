@@ -3,7 +3,7 @@
 
   "name": "Feed Learn",
   "description": "FeedLearn helps you learn vocabulary by showing you quizzes as you browse your Facebook feed",
-  "version": "1.12",
+  "version": "1.13",
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [
@@ -21,7 +21,7 @@
   },
   "content_scripts": [ {
     "all_frames": true,
-    "js": [ "jquery-1.11.1.min.js", "feedlearn.js" ],
+    "js": [ "jquery-1.11.1.min.js", "jquery.isinview.js", "feedlearn.js" ],
     "matches": [ "http://facebook.com/*", "https://facebook.com/*", "http://www.facebook.com/*", "https://www.facebook.com/*" ],
     "run_at": "document_end"
   }, {

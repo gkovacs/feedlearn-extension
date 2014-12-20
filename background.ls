@@ -59,6 +59,11 @@ addlog = (logdata, cookie) ->
   post-json-ext 'https://feedlearn.herokuapp.com/addlog', data
 
 chrome.runtime.on-message.add-listener (request, sender, send-response) ->
+  if request? and request.feedlearn == 'shownquizzeschanged'
+    fbname = request.fbname
+    fburl = request.fburl
+    get-cookie (cookie) ->
+      addlogfb {type: 'shownquizzeschanged', 'visibleids': request.visibleids, 'shownids': request.shownids, 'hiddenids': request.hiddenids, 'showntimes': request.showntimes, fbname: fbname, fburl: fburl}, cookie
   if request? and request.feedlearn == 'missingformat'
     fbname = request.fbname
     fburl = request.fburl
@@ -66,10 +71,12 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
       fullname = cookie.fullname
       if not fullname? or fullname == 'Anonymous User' or fullname.length == 0
         cookie.fullname = fbname
-      addlog {type: 'missingformat', fbname: fbname, fburl: fburl}, cookie
+      addlogfb {type: 'missingformat', fbname: fbname, fburl: fburl}, cookie
   if request? and request.feedlearn == 'fbstillopen'
+    fbname = request.fbname
+    fburl = request.fburl
     get-cookie (cookie) ->
-      addlogfb {type: 'fbstillopen', mostrecentmousemove: request.mostrecentmousemove, timeopened: request.timeopened, timesincemousemove: request.timesincemousemove}, cookie
+      addlogfb {type: 'fbstillopen', mostrecentmousemove: request.mostrecentmousemove, timeopened: request.timeopened, timesincemousemove: request.timesincemousemove, 'visiblequizids': request.visiblequizids, fbname: fbname, fburl: fburl}, cookie
   if request? and request.feedlearn == 'getformat'
     #console.log 'right type'
     #send-response({value: 'hello'})
@@ -81,7 +88,7 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
       if not fullname? or fullname == 'Anonymous User' or fullname.length == 0
         fullname = request.fbname
         cookie.fullname = fullname
-        addlog {type: 'missingcookie', fbname: fbname, fburl: fburl}, cookie
+        addlogfb {type: 'missingcookie', fbname: fbname, fburl: fburl}, cookie
       get-remote-cookies fullname, (remotecookie) ->
         for k,v of remotecookie
           cookie[k] = v
