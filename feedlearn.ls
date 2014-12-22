@@ -14,7 +14,7 @@ insertBeforeItem = (jfeeditem) ->
   jfeeditem.before $('<iframe>').css({
     width: '495px'
     height: '300px'
-  }).attr('src', 'https://feedlearn.herokuapp.com/?facebook=true&quizid=' + quizid).attr('frameBorder', '0').addClass('feedlearnquiz').attr('id', quizid)
+  }).attr('src', baseurl + '/?facebook=true&quizid=' + quizid).attr('frameBorder', '0').addClass('feedlearnquiz').attr('id', quizid)
   return
 
 root.numitems = 0

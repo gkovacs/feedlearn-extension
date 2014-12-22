@@ -15,7 +15,7 @@ post-json-ext = (url, jsondata, callback) ->
   }
 
 get-cookie = (callback) ->
-  chrome.cookies.getAll {url: 'https://feedlearn.herokuapp.com/'}, (cookie) ->
+  chrome.cookies.getAll {url: baseurl + '/'}, (cookie) ->
     output = {}
     for x in cookie
       name = decodeURIComponent x.name
@@ -26,11 +26,11 @@ get-cookie = (callback) ->
 get-remote-cookies = (username, callback) ->
   if not username? or username == 'Anonymous User' or username.length == 0
     return
-  $.getJSON ('https://feedlearn.herokuapp.com/cookiesforuser?' + $.param({username: username})), (cookies) ->
+  $.getJSON (baseurl + '/cookiesforuser?' + $.param({username: username})), (cookies) ->
     #console.log 'remote cookies:'
     #console.log cookies
     for k,v of cookies
-      chrome.cookies.set({url: 'https://feedlearn.herokuapp.com/', name: k, value: encodeURIComponent(v.toString()), path: '/'})
+      chrome.cookies.set({url: baseurl + '/', name: k, value: encodeURIComponent(v.toString()), path: '/'})
     callback(cookies)
 
 #root.isfirst = true
@@ -45,7 +45,7 @@ addlogfb = (logdata, cookie) ->
   data.time = Date.now()
   data.timeloc = new Date().toString()
   #data.starttime = root.starttime
-  post-json-ext 'https://feedlearn.herokuapp.com/addlogfb', data
+  post-json-ext baseurl + '/addlogfb', data
 
 addlog = (logdata, cookie) ->
   data = $.extend {}, logdata
@@ -56,7 +56,7 @@ addlog = (logdata, cookie) ->
   data.time = Date.now()
   data.timeloc = new Date().toString()
   #data.starttime = root.starttime
-  post-json-ext 'https://feedlearn.herokuapp.com/addlog', data
+  post-json-ext baseurl + '/addlog', data
 
 chrome.runtime.on-message.add-listener (request, sender, send-response) ->
   if request? and request.feedlearn == 'shownquizzeschanged'

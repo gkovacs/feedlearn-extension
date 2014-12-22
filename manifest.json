@@ -1,10 +1,9 @@
 {
   "manifest_version": 2,
-
-  "name": "Feed Learn",
+  "name": "Feed Learn Local",
+  "short_name": "feedlearnlocal",
   "description": "FeedLearn helps you learn vocabulary by showing you quizzes as you browse your Facebook feed",
-  "version": "1.13",
-
+  "version": "1.14",
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [
     "cookies",
@@ -12,23 +11,45 @@
     "https://facebook.com/*",
     "http://www.facebook.com/*",
     "https://www.facebook.com/*",
-    "http://feedlearn.herokuapp.com/*",
-    "https://feedlearn.herokuapp.com/*"
+    "http://localhost:5000/*",
+    "https://localhost:5001/*"
   ],
   "background": {
-    "scripts": [ "jquery-1.11.1.min.js", "background.js" ],
+    "scripts": [
+      "jquery-1.11.1.min.js",
+      "baseurl.js",
+      "background.js"
+    ],
     "persistent": false
   },
-  "content_scripts": [ {
-    "all_frames": true,
-    "js": [ "jquery-1.11.1.min.js", "jquery.isinview.js", "feedlearn.js" ],
-    "matches": [ "http://facebook.com/*", "https://facebook.com/*", "http://www.facebook.com/*", "https://www.facebook.com/*" ],
-    "run_at": "document_end"
-  }, {
-    "all_frames": true,
-    "js": [ "jquery-1.11.1.min.js", "feedlearninstalled.js" ],
-    "matches": [ "http://feedlearn.herokuapp.com/study1", "https://feedlearn.herokuapp.com/study1" ],
-    "run_at": "document_end"
-  } ]
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "js": [
+        "jquery-1.11.1.min.js",
+        "jquery.isinview.js",
+        "baseurl.js",
+        "feedlearn.js"
+      ],
+      "matches": [
+        "http://facebook.com/*",
+        "https://facebook.com/*",
+        "http://www.facebook.com/*",
+        "https://www.facebook.com/*"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "all_frames": true,
+      "js": [
+        "jquery-1.11.1.min.js",
+        "feedlearninstalled.js"
+      ],
+      "matches": [
+        "http://localhost:5000/study1",
+        "https://localhost:5001/study1"
+      ],
+      "run_at": "document_end"
+    }
+  ]
 }
-

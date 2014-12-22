@@ -17,7 +17,7 @@
   };
   getCookie = function(callback){
     return chrome.cookies.getAll({
-      url: 'https://feedlearn.herokuapp.com/'
+      url: baseurl + '/'
     }, function(cookie){
       var output, i$, len$, x, name, value;
       output = {};
@@ -34,14 +34,14 @@
     if (username == null || username === 'Anonymous User' || username.length === 0) {
       return;
     }
-    return $.getJSON('https://feedlearn.herokuapp.com/cookiesforuser?' + $.param({
+    return $.getJSON(baseurl + '/cookiesforuser?' + $.param({
       username: username
     }), function(cookies){
       var k, v;
       for (k in cookies) {
         v = cookies[k];
         chrome.cookies.set({
-          url: 'https://feedlearn.herokuapp.com/',
+          url: baseurl + '/',
           name: k,
           value: encodeURIComponent(v.toString()),
           path: '/'
@@ -59,7 +59,7 @@
     data.scriptformat = cookie.scriptformat;
     data.time = Date.now();
     data.timeloc = new Date().toString();
-    return postJsonExt('https://feedlearn.herokuapp.com/addlogfb', data);
+    return postJsonExt(baseurl + '/addlogfb', data);
   };
   addlog = function(logdata, cookie){
     var data;
@@ -70,7 +70,7 @@
     data.scriptformat = cookie.scriptformat;
     data.time = Date.now();
     data.timeloc = new Date().toString();
-    return postJsonExt('https://feedlearn.herokuapp.com/addlog', data);
+    return postJsonExt(baseurl + '/addlog', data);
   };
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     var fbname, fburl;
