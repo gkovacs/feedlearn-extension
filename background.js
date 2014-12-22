@@ -51,9 +51,11 @@
     });
   };
   addlogfb = function(logdata, cookie){
-    var data;
+    var data, ref$;
     data = $.extend({}, logdata);
-    data.username = cookie.fullname;
+    data.username = (ref$ = cookie.fullname) != null
+      ? ref$
+      : root.fbname;
     data.lang = cookie.lang;
     data.format = cookie.format;
     data.scriptformat = cookie.scriptformat;
@@ -62,9 +64,11 @@
     return postJsonExt(baseurl + '/addlogfb', data);
   };
   addlog = function(logdata, cookie){
-    var data;
+    var data, ref$;
     data = $.extend({}, logdata);
-    data.username = cookie.fullname;
+    data.username = (ref$ = cookie.fullname) != null
+      ? ref$
+      : root.fbname;
     data.lang = cookie.lang;
     data.format = cookie.format;
     data.scriptformat = cookie.scriptformat;
@@ -72,11 +76,21 @@
     data.timeloc = new Date().toString();
     return postJsonExt(baseurl + '/addlog', data);
   };
+  root.fbname = null;
+  root.fburl = null;
+  root.sentmissingcookie = false;
+  root.sentmissingformat = false;
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     var fbname, fburl;
     if (request != null && request.feedlearn === 'shownquizzeschanged') {
       fbname = request.fbname;
       fburl = request.fburl;
+      if (fbname != null && fbname.length > 0) {
+        root.fbname = fbname;
+      }
+      if (fburl != null && fburl.length > 0) {
+        root.fburl = fburl;
+      }
       getCookie(function(cookie){
         return addlogfb({
           type: 'shownquizzeschanged',
@@ -92,22 +106,37 @@
     if (request != null && request.feedlearn === 'missingformat') {
       fbname = request.fbname;
       fburl = request.fburl;
+      if (fbname != null && fbname.length > 0) {
+        root.fbname = fbname;
+      }
+      if (fburl != null && fburl.length > 0) {
+        root.fburl = fburl;
+      }
       getCookie(function(cookie){
         var fullname;
         fullname = cookie.fullname;
         if (fullname == null || fullname === 'Anonymous User' || fullname.length === 0) {
           cookie.fullname = fbname;
         }
-        return addlogfb({
-          type: 'missingformat',
-          fbname: fbname,
-          fburl: fburl
-        }, cookie);
+        if (!root.sentmissingformat) {
+          root.sentmissingformat = true;
+          return addlogfb({
+            type: 'missingformat',
+            fbname: fbname,
+            fburl: fburl
+          }, cookie);
+        }
       });
     }
     if (request != null && request.feedlearn === 'fbstillopen') {
       fbname = request.fbname;
       fburl = request.fburl;
+      if (fbname != null && fbname.length > 0) {
+        root.fbname = fbname;
+      }
+      if (fburl != null && fburl.length > 0) {
+        root.fburl = fburl;
+      }
       getCookie(function(cookie){
         return addlogfb({
           type: 'fbstillopen',
@@ -123,17 +152,26 @@
     if (request != null && request.feedlearn === 'getformat') {
       fbname = request.fbname;
       fburl = request.fburl;
+      if (fbname != null && fbname.length > 0) {
+        root.fbname = fbname;
+      }
+      if (fburl != null && fburl.length > 0) {
+        root.fburl = fburl;
+      }
       return getCookie(function(cookie){
         var fullname;
         fullname = cookie.fullname;
         if (fullname == null || fullname === 'Anonymous User' || fullname.length === 0) {
           fullname = request.fbname;
           cookie.fullname = fullname;
-          addlogfb({
-            type: 'missingcookie',
-            fbname: fbname,
-            fburl: fburl
-          }, cookie);
+          if (!root.sentmissingcookie) {
+            root.sentmissingcookie = true;
+            addlogfb({
+              type: 'missingcookie',
+              fbname: fbname,
+              fburl: fburl
+            }, cookie);
+          }
         }
         return getRemoteCookies(fullname, function(remotecookie){
           var k, v, format;

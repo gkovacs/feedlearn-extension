@@ -38,7 +38,7 @@ get-remote-cookies = (username, callback) ->
 
 addlogfb = (logdata, cookie) ->
   data = $.extend {}, logdata
-  data.username = cookie.fullname
+  data.username = cookie.fullname ? root.fbname
   data.lang = cookie.lang
   data.format = cookie.format
   data.scriptformat = cookie.scriptformat
@@ -49,7 +49,7 @@ addlogfb = (logdata, cookie) ->
 
 addlog = (logdata, cookie) ->
   data = $.extend {}, logdata
-  data.username = cookie.fullname
+  data.username = cookie.fullname ? root.fbname
   data.lang = cookie.lang
   data.format = cookie.format
   data.scriptformat = cookie.scriptformat
@@ -58,23 +58,42 @@ addlog = (logdata, cookie) ->
   #data.starttime = root.starttime
   post-json-ext baseurl + '/addlog', data
 
+root.fbname = null
+root.fburl = null
+root.sentmissingcookie = false
+root.sentmissingformat = false
+
 chrome.runtime.on-message.add-listener (request, sender, send-response) ->
   if request? and request.feedlearn == 'shownquizzeschanged'
     fbname = request.fbname
     fburl = request.fburl
+    if fbname? and fbname.length > 0
+      root.fbname = fbname
+    if fburl? and fburl.length > 0
+      root.fburl = fburl
     get-cookie (cookie) ->
       addlogfb {type: 'shownquizzeschanged', 'visibleids': request.visibleids, 'shownids': request.shownids, 'hiddenids': request.hiddenids, 'showntimes': request.showntimes, fbname: fbname, fburl: fburl}, cookie
   if request? and request.feedlearn == 'missingformat'
     fbname = request.fbname
     fburl = request.fburl
+    if fbname? and fbname.length > 0
+      root.fbname = fbname
+    if fburl? and fburl.length > 0
+      root.fburl = fburl
     get-cookie (cookie) ->
       fullname = cookie.fullname
       if not fullname? or fullname == 'Anonymous User' or fullname.length == 0
         cookie.fullname = fbname
-      addlogfb {type: 'missingformat', fbname: fbname, fburl: fburl}, cookie
+      if not root.sentmissingformat
+        root.sentmissingformat = true
+        addlogfb {type: 'missingformat', fbname: fbname, fburl: fburl}, cookie
   if request? and request.feedlearn == 'fbstillopen'
     fbname = request.fbname
     fburl = request.fburl
+    if fbname? and fbname.length > 0
+      root.fbname = fbname
+    if fburl? and fburl.length > 0
+      root.fburl = fburl
     get-cookie (cookie) ->
       addlogfb {type: 'fbstillopen', mostrecentmousemove: request.mostrecentmousemove, timeopened: request.timeopened, timesincemousemove: request.timesincemousemove, 'visiblequizids': request.visiblequizids, fbname: fbname, fburl: fburl}, cookie
   if request? and request.feedlearn == 'getformat'
@@ -83,12 +102,18 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
     #chrome.cookies.get {url: 'http://feedlearn.herokuapp.com/', name: 'format'}, (cookie) ->
     fbname = request.fbname
     fburl = request.fburl
+    if fbname? and fbname.length > 0
+      root.fbname = fbname
+    if fburl? and fburl.length > 0
+      root.fburl = fburl
     get-cookie (cookie) ->
       fullname = cookie.fullname
       if not fullname? or fullname == 'Anonymous User' or fullname.length == 0
         fullname = request.fbname
         cookie.fullname = fullname
-        addlogfb {type: 'missingcookie', fbname: fbname, fburl: fburl}, cookie
+        if not root.sentmissingcookie
+          root.sentmissingcookie = true
+          addlogfb {type: 'missingcookie', fbname: fbname, fburl: fburl}, cookie
       get-remote-cookies fullname, (remotecookie) ->
         for k,v of remotecookie
           cookie[k] = v
