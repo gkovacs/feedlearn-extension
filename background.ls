@@ -29,8 +29,13 @@ get-remote-cookies = (username, callback) ->
   $.getJSON (baseurl + '/cookiesforuser?' + $.param({username: username})), (cookies) ->
     #console.log 'remote cookies:'
     #console.log cookies
+    yearlater = Math.floor((Date.now() / 1000.0) + 3600*24*365)
     for k,v of cookies
-      chrome.cookies.set({url: baseurl + '/', name: k, value: encodeURIComponent(v.toString()), path: '/'})
+      chrome.cookies.set({url: baseurl + '/', name: k, value: encodeURIComponent(v.toString()), path: '/', expirationDate: yearlater})
+    if root.fbname? and root.fbname.length > 0
+      chrome.cookies.set({url: baseurl + '/', name: 'fbname', value: encodeURIComponent(root.fbname.toString()), path: '/', expirationDate: yearlater})
+    if root.fburl? and root.fburl.length > 0
+      chrome.cookies.set({url: baseurl + '/', name: 'fburl', value: encodeURIComponent(root.fburl.toString()), path: '/', expirationDate: yearlater})
     callback(cookies)
 
 #root.isfirst = true

@@ -37,14 +37,34 @@
     return $.getJSON(baseurl + '/cookiesforuser?' + $.param({
       username: username
     }), function(cookies){
-      var k, v;
+      var yearlater, k, v;
+      yearlater = Math.floor(Date.now() / 1000.0 + 3600 * 24 * 365);
       for (k in cookies) {
         v = cookies[k];
         chrome.cookies.set({
           url: baseurl + '/',
           name: k,
           value: encodeURIComponent(v.toString()),
-          path: '/'
+          path: '/',
+          expirationDate: yearlater
+        });
+      }
+      if (root.fbname != null && root.fbname.length > 0) {
+        chrome.cookies.set({
+          url: baseurl + '/',
+          name: 'fbname',
+          value: encodeURIComponent(root.fbname.toString()),
+          path: '/',
+          expirationDate: yearlater
+        });
+      }
+      if (root.fburl != null && root.fburl.length > 0) {
+        chrome.cookies.set({
+          url: baseurl + '/',
+          name: 'fburl',
+          value: encodeURIComponent(root.fburl.toString()),
+          path: '/',
+          expirationDate: yearlater
         });
       }
       return callback(cookies);
