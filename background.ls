@@ -23,6 +23,13 @@ get-cookie = (callback) ->
       output[name] = value
     callback output
 
+set-fbname-fburl-cookies = ->
+  yearlater = Math.floor((Date.now() / 1000.0) + 3600*24*365)
+  if root.fbname? and root.fbname.length > 0
+    chrome.cookies.set({url: baseurl + '/', name: 'fbname', value: encodeURIComponent(root.fbname.toString()), path: '/', expirationDate: yearlater})
+  if root.fburl? and root.fburl.length > 0
+    chrome.cookies.set({url: baseurl + '/', name: 'fburl', value: encodeURIComponent(root.fburl.toString()), path: '/', expirationDate: yearlater})
+
 get-remote-cookies = (username, callback) ->
   if not username? or username == 'Anonymous User' or username.length == 0
     return
@@ -32,10 +39,7 @@ get-remote-cookies = (username, callback) ->
     yearlater = Math.floor((Date.now() / 1000.0) + 3600*24*365)
     for k,v of cookies
       chrome.cookies.set({url: baseurl + '/', name: k, value: encodeURIComponent(v.toString()), path: '/', expirationDate: yearlater})
-    if root.fbname? and root.fbname.length > 0
-      chrome.cookies.set({url: baseurl + '/', name: 'fbname', value: encodeURIComponent(root.fbname.toString()), path: '/', expirationDate: yearlater})
-    if root.fburl? and root.fburl.length > 0
-      chrome.cookies.set({url: baseurl + '/', name: 'fburl', value: encodeURIComponent(root.fburl.toString()), path: '/', expirationDate: yearlater})
+    set-fbname-fburl-cookies()
     callback(cookies)
 
 #root.isfirst = true
@@ -111,6 +115,8 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
       root.fbname = fbname
     if fburl? and fburl.length > 0
       root.fburl = fburl
+    if root.fbname? and root.fburl?
+      set-fbname-fburl-cookies()
     get-cookie (cookie) ->
       fullname = cookie.fullname
       if not fullname? or fullname == 'Anonymous User' or fullname.length == 0
