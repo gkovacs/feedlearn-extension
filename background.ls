@@ -119,13 +119,16 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
         if not root.sentmissingcookie
           root.sentmissingcookie = true
           addlogfb {type: 'missingcookie', fbname: fbname, fburl: fburl}, cookie
-      get-remote-cookies fullname, (remotecookie) ->
-        for k,v of remotecookie
-          cookie[k] = v
+      #get-remote-cookies fullname, (remotecookie) ->
+      #  for k,v of remotecookie
+      #    cookie[k] = v
+      do ->
         #console.log 'combined cookie:'
         #console.log cookie
         #console.log cookie.value
-        format = cookie.format
+        format = cookie.format_manual
+        if format != 'link' && format != 'interactive' && format != 'none'
+          format = 'interactive'
         send-response {feedlearn: true, format: format}
         chrome.tabs.query {}, (tabs) ->
           for tab in tabs

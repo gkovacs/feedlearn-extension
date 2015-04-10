@@ -193,13 +193,12 @@
             }, cookie);
           }
         }
-        return getRemoteCookies(fullname, function(remotecookie){
-          var k, v, format;
-          for (k in remotecookie) {
-            v = remotecookie[k];
-            cookie[k] = v;
+        return function(){
+          var format;
+          format = cookie.format_manual;
+          if (format !== 'link' && format !== 'interactive' && format !== 'none') {
+            format = 'interactive';
           }
-          format = cookie.format;
           sendResponse({
             feedlearn: true,
             format: format
@@ -225,7 +224,7 @@
             fbname: fbname,
             fburl: fburl
           }, cookie);
-        });
+        }();
       });
     }
   });
