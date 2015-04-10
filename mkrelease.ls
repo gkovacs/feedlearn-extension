@@ -12,7 +12,7 @@ writeJSON = fsx.writeJSONSync
 exists = fsx.existsSync
 mv = fsx.moveSync
 
-version = '1.14'
+version = '1.15'
 jsfiles = <[ background.js feedlearn.js feedlearninstalled.js jquery-1.11.1.min.js jquery.isinview.js ]>
 
 base_permissions = [
