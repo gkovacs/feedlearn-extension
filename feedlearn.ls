@@ -87,6 +87,7 @@ initialize = (format) ->
   $(document).mousemove ->
     root.mostrecentmousemove = Date.now()
     return
+  /*
   setInterval ->
     fburl = $('.fbxWelcomeBoxName').attr('href')
     fbname = $('.fbxWelcomeBoxName').text()
@@ -99,6 +100,7 @@ initialize = (format) ->
     chrome.runtime.send-message {feedlearn: 'fbstillopen', mostrecentmousemove: root.mostrecentmousemove, timeopened: root.timeopened, timesincemousemove: timesincemousemove, 'visiblequizids': root.prev_visible_quiz_ids, 'showntimes': showntimes, fburl: fburl, fbname: fbname}
     return
   , 5000
+  */
   #for feeditem in $('.mbm')
   #  $(feeditem).before($('<div>').text('newfoobar'))
   #$.get 'https://geza.herokuapp.com/index.html', (data) ->

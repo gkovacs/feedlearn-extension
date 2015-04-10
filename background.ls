@@ -45,7 +45,7 @@ addlogfb = (logdata, cookie) ->
   data = $.extend {}, logdata
   data.username = cookie.fullname ? root.fbname
   data.lang = cookie.lang
-  data.format = cookie.format
+  data.format = cookie.format_manual
   data.scriptformat = cookie.scriptformat
   data.time = Date.now()
   data.timeloc = new Date().toString()
@@ -56,7 +56,7 @@ addlog = (logdata, cookie) ->
   data = $.extend {}, logdata
   data.username = cookie.fullname ? root.fbname
   data.lang = cookie.lang
-  data.format = cookie.format
+  data.format = cookie.format_manual
   data.scriptformat = cookie.scriptformat
   data.time = Date.now()
   data.timeloc = new Date().toString()
@@ -132,7 +132,7 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
         send-response {feedlearn: true, format: format}
         chrome.tabs.query {}, (tabs) ->
           for tab in tabs
-            chrome.tabs.send-message tab.id, {feedlearn: true, format: cookie.format}
+            chrome.tabs.send-message tab.id, {feedlearn: true, format: format}
         addlog {type: 'fbvisit', fbname: fbname, fburl: fburl}, cookie
         addlogfb {type: 'fbvisit', fbname: fbname, fburl: fburl}, cookie
         #setInterval ->

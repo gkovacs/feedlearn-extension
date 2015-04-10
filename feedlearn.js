@@ -130,33 +130,9 @@
         insertIfMissing();
       }, 1000);
     }
-    $(document).mousemove(function(){
+    return $(document).mousemove(function(){
       root.mostrecentmousemove = Date.now();
     });
-    return setInterval(function(){
-      var fburl, fbname, timesincemousemove, showntimes, i$, ref$, len$, newid;
-      fburl = $('.fbxWelcomeBoxName').attr('href');
-      fbname = $('.fbxWelcomeBoxName').text();
-      timesincemousemove = Date.now() - root.mostrecentmousemove;
-      if (timesincemousemove > 10000) {
-        return;
-      }
-      showntimes = {};
-      for (i$ = 0, len$ = (ref$ = root.prev_visible_quiz_ids).length; i$ < len$; ++i$) {
-        newid = ref$[i$];
-        showntimes[newid] = root.all_shown_times[newid];
-      }
-      chrome.runtime.sendMessage({
-        feedlearn: 'fbstillopen',
-        mostrecentmousemove: root.mostrecentmousemove,
-        timeopened: root.timeopened,
-        timesincemousemove: timesincemousemove,
-        'visiblequizids': root.prev_visible_quiz_ids,
-        'showntimes': showntimes,
-        fburl: fburl,
-        fbname: fbname
-      });
-    }, 5000);
   };
   preinitialize = function(format){
     if ($('#feedlearn').length === 0) {

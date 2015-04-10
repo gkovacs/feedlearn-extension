@@ -77,7 +77,7 @@
       ? ref$
       : root.fbname;
     data.lang = cookie.lang;
-    data.format = cookie.format;
+    data.format = cookie.format_manual;
     data.scriptformat = cookie.scriptformat;
     data.time = Date.now();
     data.timeloc = new Date().toString();
@@ -90,7 +90,7 @@
       ? ref$
       : root.fbname;
     data.lang = cookie.lang;
-    data.format = cookie.format;
+    data.format = cookie.format_manual;
     data.scriptformat = cookie.scriptformat;
     data.time = Date.now();
     data.timeloc = new Date().toString();
@@ -209,7 +209,7 @@
               tab = tabs[i$];
               results$.push(chrome.tabs.sendMessage(tab.id, {
                 feedlearn: true,
-                format: cookie.format
+                format: format
               }));
             }
             return results$;
