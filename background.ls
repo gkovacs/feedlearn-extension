@@ -117,6 +117,12 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
       root.fburl = fburl
     if root.fbname? and root.fburl?
       set-fbname-fburl-cookies()
+    format = 'interactive'
+    send-response {feedlearn: true, format: format}
+    chrome.tabs.query {}, (tabs) ->
+      for tab in tabs
+        chrome.tabs.send-message tab.id, {feedlearn: true, format: format}
+    /*
     get-cookie (cookie) ->
       fullname = cookie.fullname
       if not fullname? or fullname == 'Anonymous User' or fullname.length == 0
@@ -144,3 +150,4 @@ chrome.runtime.on-message.add-listener (request, sender, send-response) ->
         #setInterval ->
         #  addlogfb {type: 'fbstillopen'}, cookie
         #, 5000
+    */

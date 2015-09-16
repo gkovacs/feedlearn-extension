@@ -1,6 +1,7 @@
 #!/usr/bin/env lsc
 
-{exec, run} = require 'execSync'
+# {exec, run} = require 'execSync'
+{exec} = require 'shelljs'
 
 fsx = require 'fs-extended'
 copy = fsx.copySync
@@ -12,7 +13,7 @@ writeJSON = fsx.writeJSONSync
 exists = fsx.existsSync
 mv = fsx.moveSync
 
-version = '1.17'
+version = '1.18'
 jsfiles = <[ background.js feedlearn.js feedlearninstalled.js jquery-1.11.1.min.js jquery.isinview.js ]>
 
 base_permissions = [
@@ -77,6 +78,21 @@ buildinfo_list = [
       "run_at": "document_end"
     } ]
   }
+  {
+    name: 'EdvertisementsFacebook'
+    short_name: 'edvertisementsfacebook'
+    baseurl: 'https://edvertisements.herokuapp.com'
+    permissions: base_permissions ++ [
+      "http://edvertisements.herokuapp.com/*"
+      "https://edvertisements.herokuapp.com/*"
+    ]
+    content_scripts: base_content_scripts ++ [ {
+      "all_frames": true,
+      "js": [ "jquery-1.11.1.min.js", "feedlearninstalled.js" ]
+      "matches": [ "http://edvertisements.herokuapp.com/study1", "https://edvertisements.herokuapp.com/study1" ]
+      "run_at": "document_end"
+    } ]
+  }
 ]
 
 manifest_template = readJSON 'manifest.json'
@@ -104,6 +120,6 @@ for buildinfo in buildinfo_list
   process.chdir outdir
   writeJSON 'manifest.json', manifest, '  '
   write 'baseurl.js', "baseurl = '#{baseurl}';\n"
-  run "zip #{outfile} *js manifest.json"
+  exec "zip #{outfile} *js manifest.json"
   mv outfile, origdir + '/' + outfile
   process.chdir origdir

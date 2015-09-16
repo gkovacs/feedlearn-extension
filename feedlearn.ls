@@ -20,7 +20,7 @@ insertBeforeItem = (jfeeditem) ->
 root.numitems = 0
 
 insertIfMissing = ->
-  for feeditem in $('.mbm._5jmm')
+  for feeditem in document.querySelectorAll('.mbm._5jmm,.userContentWrapper._5pcr')
     #jfeeditem = $(feeditem)
     #if not jfeeditem.attr('feedlearninserted')
     if not feeditem.feedlearninserted
@@ -142,12 +142,14 @@ preinitialize = (format) ->
     })
     initialize(format)
 
+/*
 chrome.runtime.on-message.add-listener (request, sender) ->
   #console.log 'contentscript received message'
   #console.log request
   #console.log sender
   if request.feedlearn
     preinitialize(request.format)
+*/
 
 loadfirststart = ->
   if /*window.location.toString() == 'https://www.facebook.com/' and*/ $('#feedlearn').length == 0
@@ -155,7 +157,8 @@ loadfirststart = ->
     fbname = $('.fbxWelcomeBoxName').text()
     #console.log 'fburl:' + fburl
     #console.log 'fbname:' + fbname
-    chrome.runtime.send-message {feedlearn: 'getformat', fburl: fburl, fbname: fbname}
+    #chrome.runtime.send-message {feedlearn: 'getformat', fburl: fburl, fbname: fbname}
+    preinitialize 'interactive'
 
 loadfirststart()
 root.firststartprocess = setInterval loadfirststart, 5000
